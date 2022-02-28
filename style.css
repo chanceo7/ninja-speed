@@ -1,0 +1,71 @@
+.wall{
+    background-color: rgb(22, 94, 94);
+    height:80px;
+    width:80px;
+    display: inline-block;
+    
+}
+
+.sushi{
+    background-color:purple;
+    height:80px;
+    width:80px;
+    display: inline-block;
+    background-size: contain;
+    
+}
+.blank{
+    background-color:beige;
+    height:80px;
+    width:80px;
+    display: inline-block;
+    background-size: contain;
+    
+}
+.ninja{
+    background-color:beige;
+    height:25px;
+    width: 25px;
+    display: inline-block;
+    background-size: contain;
+    position: absolute;  
+}
+
+#world{
+    position: relative;
+    line-height: 0pc;
+}
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+#count{
+    position: absolute;
+    top:40%;
+    left:70%;
+}
+
+h1{
+    font-size:62px;
+    font-family: 'Poppins', sans-serif;
+}
+.green{
+    color:rgb(25, 80, 25)
+}
+body{
+    background-image: url('https://previews.123rf.com/images/carloscastilla/carloscastilla1303/carloscastilla130300086/18586363-3d-white-tile-wall-background.jpg');
+}
+.title{
+    position: absolute;
+    top:7%;
+    left:70%;
+    font-family: 'Poppins', sans-serif;
+}
+
+#safeTimerDisplay{
+    position: absolute;
+    top:12%;
+    left:70%;
+    font-family: 'Poppins', sans-serif;
+}

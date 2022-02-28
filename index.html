@@ -1,0 +1,278 @@
+<html>
+
+	<head>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		
+		<div id="world"></div>   
+		<div id='character' style='position:absolute; top:80px; left:80px; background-image: url("img/right1.png"); width:59px; height:80px;'></div>
+		<div id="count"></div>
+        <div id="safeTimerDisplay"></div>
+		<div class="title">
+			<h2>Created by Chance Ntambwe</h2>
+		</div>
+	 <script type="text/javascript">
+			var pacman={
+				x:1,
+				y:1,
+			}
+			timer();
+			function update(){
+                document.getElementById("character").style.top = pacman.x*80+"px";
+                document.getElementById("character").style.left= pacman.y*80+"px";
+                document.getElementById("character").style.backgroundImage="url('img/"+direction+""+walk+".png')"
+                
+			}
+            var world=[
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,0,0,2,0,0,0,2,1,2,0,0,0,2,1],
+                [1,1,0,1,1,0,0,0,0,1,0,1,0,1,1,1],
+                [1,0,0,2,0,1,0,1,0,1,0,1,0,0,2,1],
+                [1,0,0,2,0,0,2,1,0,1,0,1,0,0,0,1],
+                [1,1,0,1,1,1,1,1,2,0,0,1,2,2,0,1],
+                [1,0,0,2,0,0,0,1,0,1,1,1,1,1,0,1],
+                [1,2,1,2,0,0,0,1,0,0,0,0,0,0,0,1],
+                [1,0,0,1,0,0,0,1,0,1,0,2,1,1,0,1],
+                [1,0,0,2,1,2,0,1,0,1,0,1,1,0,0,1],
+                [1,2,2,0,0,1,0,1,2,1,2,0,1,0,2,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+            
+            var dic={
+                0:"blank",
+                1:"wall",
+                2:"sushi",
+            };
+            
+            function drawWorld(){
+                var output="";
+                for(var i=0; i<world.length; i++){
+                    output+="<div class='row'>"
+                        for(var x=0; x<world[i].length; x++) {
+                            output+="<div class='"+dic[world[i][x]]+"' id='"+i+"+"+x+"'  onclick='mouse(id)'></div>"
+                        }
+                        output+="</div>"
+                    }
+                    document.getElementById('world').innerHTML=output;
+                    
+                };
+                
+                drawWorld();
+                var count=0;        
+                var walk=1;
+                document.onkeydown = function(e){
+                    console.log(count);
+                    if(e.keyCode == 37) { // LEFT
+                        if(world[pacman.x][pacman.y-1]!=1){
+                            pacman.y--;
+                        }
+                        if(world[pacman.x][pacman.y]==2){
+                            count++;
+                        }
+                        direction='left'
+                        if(walk==2){
+                            walk-=1;
+                        }else{
+                            walk+=1;
+                        }
+                    }
+                    else if (e.keyCode == 39) { // RIGHT
+                        if(world[pacman.x][pacman.y+1]!=1){
+                            pacman.y++;
+                        }
+                        if(world[pacman.x][pacman.y]==2){
+                            count++;
+                        }
+                        direction="right" ;
+                        if(walk==2){
+                            walk-=1;
+                        }else{
+                            walk+=1;
+                        }  		
+                    }
+                    else if (e.keyCode == 40) { // DOWN
+                        if(world[pacman.x+1][pacman.y]!=1){
+                            pacman.x++;
+                        }
+                        if(world[pacman.x][pacman.y]==2){
+                            count++;
+                        }
+                        direction="down";
+                        if(walk==2){
+                            walk-=1;
+                        }else{
+                            walk+=1;
+                        }
+                    }
+                    else if (e.keyCode == 38 ) { // up
+                        if(world[pacman.x-1][pacman.y]!=1){
+                            pacman.x--;
+					}
+					if(world[pacman.x][pacman.y]==2){
+						count++;
+					}
+					direction="top";
+					if(walk==2){
+						walk-=1;
+					}else{
+						walk+=1;
+					}
+				}
+				world[pacman.x][pacman.y]=0;
+				drawWorld();
+				update();
+				Count();
+			};
+	
+	
+	
+	
+			function Count(){
+                var cnt = document.getElementById('count').innerHTML
+                if(cnt !="<h1>Game Over</h1>" ){
+               
+                    if(count!=22){
+                        document.getElementById('count').innerHTML="<h1>Total Sushi:"+count+"</h1>"
+                    }else{
+                        document.getElementById('count').innerHTML="<h1 class='green'>Congratulation!!!</h1>"
+                    }
+                }
+			}
+			Count();
+
+	        function timer(){
+            var sec = 30;
+            var timer = setInterval(function(){
+            document.getElementById('safeTimerDisplay').innerHTML='<h1>00:'+sec+'</h1>';
+            sec--;
+            if (sec == -1) {
+                Count();   
+                var cnt = document.getElementById('count').innerHTML 
+                if(cnt !="<h1 class='green'>Congratulation!!!</h1>" ){}
+                clearInterval(timer);
+                cnt="<h1>Game Over</h1>"
+                clearInterval(timer);
+            }
+        }, 1000);
+            };
+	
+	
+	
+			function mouse(id){
+			   var coordinate="";
+			   coordinate+=id
+			   var array=coordinate.split('+');
+			   var a=parseInt(array[0]);
+			   var b=parseInt(array[1]);
+			   if (world[a][b]!=1){
+                   //right
+                   if(a==pacman.x && b>pacman.y){
+			           direction="right";
+                       var t=setInterval(right, 100);
+                       function right() {
+                           if(world[a][pacman.y]==2){count++; world[a][pacman.y]=0;  drawWorld();   Count()}
+                           if(world[a][pacman.y+1]!=1){
+                               if (b==pacman.y){
+                                   clearInterval(t)
+                                   console.log("value:",pacman.x, pacman.y)
+                                }else{
+                                pacman.y+=1;
+                                if(walk<2){walk++}else{walk--};    
+                                update();
+                                Count();
+                           };
+
+                         }else{clearInterval(t)} 
+                       };
+                   }; 
+                   //left
+                   if(a==pacman.x && b<pacman.y){
+			           direction="left"
+                       var t=setInterval(right, 100);
+                       function right() {
+                         if(world[a][pacman.y]==2){count++; world[a][pacman.y]=0; drawWorld(); Count()}  
+                         if(world[a][pacman.y-1]!=1){
+                           if (b==pacman.y){
+                            if(world[a][b]==2){count++}
+                               clearInterval(t)
+                               console.log("value:",pacman.x, pacman.y)
+                            }else{
+                                pacman.y-=1;
+                                if(walk<2){walk++}else{walk--}; 
+                                update();
+                                Count();
+                           };
+
+                         }else{clearInterval(t)} 
+                       };
+                   }; 
+                   //down
+                   if(a>pacman.x && b==pacman.y){
+			           direction="down";
+                       var t=setInterval(right, 100);
+                       function right() {
+                        if(world[pacman.x][pacman.y]==2){count++; world[pacman.x][pacman.y]=0; drawWorld(); Count()}  
+                         if(world[pacman.x+1][pacman.y]!=1){
+                           if (a==pacman.x){
+                               clearInterval(t)
+                               console.log("value:",pacman.x, pacman.y)
+                            }else{
+                                pacman.x+=1;
+                                if(walk<2){walk++}else{walk--}; 
+                                update();
+                                Count();
+                               
+                           };
+
+                         }else{clearInterval(t)} 
+                       };
+                   }; 
+                   //up
+                   if(a<pacman.x && b==pacman.y){
+                       direction="top"
+                       var t=setInterval(right, 100);
+                       function right() {
+                        if(world[pacman.x][pacman.y]==2){count++; world[pacman.x][pacman.y]=0;  drawWorld();    Count()}      
+                        if(world[pacman.x-1][pacman.y]!=1){
+                           if (a==pacman.x){
+                               clearInterval(t)
+                               console.log("value:",pacman.x, pacman.y)
+                            }else{
+                                pacman.x-=1;
+                                if(walk<2){walk++}else{walk--}; 
+                                update();
+                                Count();
+                           };
+
+                         }else{clearInterval(t)} 
+                       };
+                   }; 
+                   
+                   
+
+                
+
+
+
+
+
+
+
+
+
+			   };
+			
+			
+			drawWorld();
+			}
+	
+	
+			
+			
+		</script>
+	</body>
+	</html>
