@@ -47,6 +47,8 @@
                 1:"wall",
                 2:"sushi",
             };
+
+            var stopped = false
             
             function drawWorld(){
                 var output="";
@@ -139,22 +141,22 @@
                         document.getElementById('count').innerHTML="<h1>Total Sushi:"+count+"</h1>"
                     }else{
                         document.getElementById('count').innerHTML="<h1 class='green'>Congratulation!!!</h1>"
+                        stopped=true
                     }
                 }
 			}
 			Count();
 
 	        function timer(){
-            var sec = 30;
+            var sec = 5;
             var timer = setInterval(function(){
             document.getElementById('safeTimerDisplay').innerHTML='<h1>00:'+sec+'</h1>';
             sec--;
             if (sec == -1) {
                 Count();   
-                var cnt = document.getElementById('count').innerHTML 
-                if(cnt !="<h1 class='green'>Congratulation!!!</h1>" ){}
-                clearInterval(timer);
-                cnt="<h1>Game Over</h1>"
+                if(stopped==false){
+                     document.getElementById('count').innerHTML="<h1>Game Over</h1>"
+                }
                 clearInterval(timer);
             }
         }, 1000);
